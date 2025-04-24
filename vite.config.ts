@@ -16,26 +16,32 @@ export default defineConfig({
         }
         
         // Copy manifest.json
-        copyFileSync('public/manifest.json', 'dist/manifest.json');
-        
-        // Copy background.js
-        copyFileSync('public/background.js', 'dist/background.js');
-        
-        // Copy images folder (recursive copy not implemented here, 
-        // you may need to enhance this for complex directory structures)
-        if (!existsSync('dist/images')) {
-          mkdirSync('dist/images', { recursive: true });
-        }
-        // You would need to copy each image individually here
+        copyFileSync('manifest.json', 'dist/manifest.json');
       }
     }
   ],
   build: {
-    outDir: 'dist',
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
+        popup: resolve(__dirname, 'index.html'),
+        content: resolve(__dirname, 'src/content.ts'),
+        background: resolve(__dirname, 'src/background.ts'),
+      },
+      output: {
+        entryFileNames: '[name].js',
+        chunkFileNames: 'chunks/[name].[hash].js',
+        assetFileNames: 'assets/[name].[hash][extname]',
       },
     },
+    outDir: 'dist',
+    emptyOutDir: true,
   },
+  optimizeDeps: {
+    include: ['pdfjs-dist/build/pdf.worker.entry']
+  },
+  resolve: {
+    alias: {
+      'pdfjs-dist': 'pdfjs-dist/webpack'
+    }
+  }
 }); 

@@ -8,3 +8,110 @@
   padding: 1rem;
   background-color: white;
 }
+
+.app-container {
+  width: 400px;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+h2 {
+  color: #34495e;
+  margin: 15px 0;
+  font-size: 1.2em;
+}
+
+.upload-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 2px dashed #3498db;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.file-input {
+  margin: 10px 0;
+  padding: 8px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.file-name {
+  color: #666;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+.skills-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.skill-category {
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.category-title {
+  color: #2c3e50;
+  font-size: 1.1em;
+  margin: 0 0 10px 0;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #3498db;
+}
+
+.skills-section {
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.skills-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.skill-item {
+  margin: 10px 0;
+  padding: 8px;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.skill-name {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.confidence-bar {
+  height: 8px;
+  background-color: #ecf0f1;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.confidence-fill {
+  height: 100%;
+  background-color: #3498db;
+  transition: width 0.3s ease;
+}
+
+.error-message {
+  color: #e74c3c;
+  margin-top: 10px;
+  font-size: 0.9em;
+  text-align: center;
+}
