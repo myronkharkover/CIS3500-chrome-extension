@@ -1,0 +1,33 @@
+/* Base/reset */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; }
+.inner { max-width: 800px; margin: 0 auto; padding: 1.5rem; }
+a { text-decoration: none; }
+
+/* Hero */
+.hero { background: #4a90e2; color: #fff; padding: 4rem 0; text-align: center; }
+.hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+.hero .tagline { font-size: 1.2rem; margin-bottom: 1.5rem; }
+.hero .btn { display: inline-block; background: #fff; color: #4a90e2; padding: 0.75rem 1.25rem; margin: 0 0.5rem; border-radius: 4px; font-weight: bold; transition: background .2s; }
+.hero .btn:hover { background: #f0f0f0; }
+
+/* Features */
+.features { padding: 3rem 0; background: #f9f9f9; }
+.features h2 { text-align: center; margin-bottom: 1rem; font-size: 1.8rem; }
+.features ul { list-style: disc; margin-left: 1.5rem; }
+.features li { margin: 0.5rem 0; }
+
+/* Screenshot */
+.screenshot { padding: 3rem 0; }
+.screenshot h2 { text-align: center; margin-bottom: 1rem; font-size: 1.8rem; }
+.screenshot img { display: block; max-width: 100%; margin: 0 auto; border: 1px solid #ddd; border-radius: 6px; }
+
+/* Install */
+.install { padding: 3rem 0; background: #f9f9f9; }
+.install h2 { text-align: center; margin-bottom: 1rem; font-size: 1.8rem; }
+.install ol { margin-left: 1.5rem; }
+.install li { margin: 0.75rem 0; }
+.install code { background: #eee; padding: 2px 4px; border-radius: 3px; font-family: monospace; }
+
+/* Footer */
+footer { padding: 1.5rem 0; text-align: center; font-size: 0.9rem; color: #666; background: #fff; } 
