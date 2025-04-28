@@ -28,9 +28,9 @@ Smart Skill Extractor is a Google Chrome extension that helps job applicants hig
 | --------------------------------------------------------------------- | -------------------- |
 | Upload PDF resume and extract skills using PDF.js                     | Emily Yu (yuemily12) |
 | Categorize skills by domain (Programming, Cloud, Web, etc.)           | Emily Yu             |
-| Store extracted skills in `chrome.storage` and sync across components | Mudit Marwaha               |
+| Store extracted skills in `chrome.storage` and sync across components | Mudit Marwaha        |
 | Overlay matching skills on Linkedin job postings via content script   | Myron Kharkover      |
-| UI/UX design for popup (upload, progress, and skill display)          | Emily Yu             |
+| UI/UX design for popup (upload, progress, and skill display)          | Emily Yu & Mudit Marwaha |
 | Vite + TypeScript React setup, manifest and build configuration       | Myron Kharkover      |
 | Error handling, regex escape, and performance optimizations           | Emily Yu & Myron     |
 | PDF storage persistence and management across sessions                | Mudit Marwaha        |
@@ -53,4 +53,4 @@ Finally, based on the URL printed by the serve command, follow that URL to see t
 
 ---
 
-Contributions and pull requests are welcome! Please open issues for bugs or feature requests. Enjoy smarter job searching with the Smart Skill Extractor!"}
+Contributions and pull requests are welcome! Please open issues for bugs or feature requests. Enjoy smarter job searching with the Smart Skill Extractor!
