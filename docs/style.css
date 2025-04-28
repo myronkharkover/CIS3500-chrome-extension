@@ -5,10 +5,37 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333
 a { text-decoration: none; }
 
 /* Hero */
-.hero { background: #4a90e2; color: #fff; padding: 4rem 0; text-align: center; }
+.hero { 
+  background: #4a90e2; 
+  color: #fff; 
+  padding: 4rem 0; 
+  text-align: center; 
+}
+
+.hero-logo {
+  width: 180px;
+  height: 180px;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+  transition: transform 0.3s ease;
+}
+
+.hero-logo:hover {
+  transform: scale(1.05);
+}
+
 .hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
 .hero .tagline { font-size: 1.2rem; margin-bottom: 1.5rem; }
-.hero .btn { display: inline-block; background: #fff; color: #4a90e2; padding: 0.75rem 1.25rem; margin: 0 0.5rem; border-radius: 4px; font-weight: bold; transition: background .2s; }
+.hero .btn { 
+  display: inline-block; 
+  background: #fff; 
+  color: #4a90e2; 
+  padding: 0.75rem 1.25rem; 
+  margin: 0 0.5rem; 
+  border-radius: 4px; 
+  font-weight: bold; 
+  transition: background .2s; 
+}
 .hero .btn:hover { background: #f0f0f0; }
 
 /* Features */
