@@ -1,6 +1,3 @@
-
-// src/App.tsx
-
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import './App.css';
 import { processPDF } from './utils/pdfProcessor';
@@ -19,7 +16,22 @@ const App: React.FC = () => {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [isLoadingPDF, setIsLoadingPDF] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [hasStoredPDF, setHasStoredPDF] = useState(false);
+  const [storedPDFName, setStoredPDFName] = useState<string>('');
 
+  useEffect(() => {
+    // Check if there's a stored PDF when component mounts
+    chrome.storage.local.get(['storedPDF', 'userSkills', 'storedPDFName'], (result) => {
+      if (result.storedPDF) {
+        setHasStoredPDF(true);
+        setStoredPDFName(result.storedPDFName || '');
+      }
+      if (result.userSkills) {
+        setSkills(result.userSkills);
+      }
+    });
+  }, []);
+  
   // ───── API-key states ─────
   const [apiKey, setApiKey] = useState<string>("");
   const [apiKeyError, setApiKeyError] = useState<string | null>(null);
@@ -107,6 +119,14 @@ const App: React.FC = () => {
     setResumeFileName(null);
     setSkills([]);
     setError(null);
+  };
+
+  const handleClearPDF = async () => {
+    await chrome.storage.local.remove(['storedPDF', 'userSkills', 'storedPDFName']);
+    setResumeFile(null);
+    setSkills([]);
+    setHasStoredPDF(false);
+    setStoredPDFName('');
   };
 
   // Group skills by category
