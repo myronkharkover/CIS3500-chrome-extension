@@ -31,18 +31,27 @@ const App: React.FC = () => {
   const [jobs, setJobs] = useState<JobInfo[]>([]);
 
   useEffect(() => {
-    // Check if there's a stored PDF when component mounts
-    chrome.storage.local.get(['storedPDF', 'userSkills', 'storedPDFName'], (result) => {
-      if (result.storedPDF) {
-        setHasStoredPDF(true);
-        setStoredPDFName(result.storedPDFName || '');
+    // Load multiple keys in one call
+    chrome.storage.local.get(
+      ['storedPDF', 'storedPDFName', 'userSkills', 'apiKey'],
+      result => {
+        // PDF
+        if (result.storedPDF) {
+          setHasStoredPDF(true);
+          setStoredPDFName(result.storedPDFName || '');
+        }
+        // Skills
+        if (Array.isArray(result.userSkills)) {
+          setSkills(result.userSkills);
+        }
+        // API Key
+        if (typeof result.apiKey === 'string') {
+          setStoredKey(result.apiKey);
+        }
+        setLoadingConfig(false);
       }
-      if (result.userSkills) {
-        setSkills(result.userSkills);
-      }
-    });
+    );
   }, []);
-
   // Load saved jobs when toggled on
   useEffect(() => {
     if (!showJobs) return;
@@ -142,7 +151,7 @@ const App: React.FC = () => {
       {storedKey ? (
         <div className="api-section">
           <p>API Key Saved</p>
-          <button onClick={clearKey}>Change Key</button>
+          <button className= "clear-button" onClick={clearKey}>Change Key</button>
         </div>
       ) : (
         <div className="api-section">

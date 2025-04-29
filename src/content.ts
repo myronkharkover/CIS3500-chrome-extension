@@ -12,6 +12,10 @@ export interface JobInfo {
 
 // Listen for messages from the popup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === "NEW_JOB") {
+    addSummarizeButton();
+  }
+
   if (message.type === 'GET_SKILLS') {
     // Get skills from storage
     chrome.storage.local.get(['userSkills'], (result) => {
@@ -188,7 +192,7 @@ function addSummarizeButton(): void {
   btn.type = "button";
   btn.setAttribute("aria-label", "Summarize");
   btn.className = applyBtn.className;
-  btn.textContent = "Summarize";
+  btn.textContent = "Extract";
   btn.style.marginLeft = "8px";
 
   btn.addEventListener("click", async () => {
