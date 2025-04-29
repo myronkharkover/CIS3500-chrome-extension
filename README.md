@@ -41,7 +41,6 @@ Smart Skill Extractor is a Google Chrome extension that helps job applicants hig
 - No backend verification: extraction logic runs entirely in the browser.
 - Linkedin matching logic only overlays skills; does not compute match score with a given job posting yet.
 - Support for non-PDF resume formats (Word, plain text) is not implemented.
-- No persistence beyond `chrome.storage`; uninstalling the extension clears uploaded data.
 
 ## Landing Page
 
