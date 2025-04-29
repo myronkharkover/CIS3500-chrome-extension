@@ -3,6 +3,7 @@
   "name": "Smart Skill Extractor",
   "version": "1.0",
   "description": "Extract and analyze skills from job postings and resumes",
+
   "icons": {
     "16": "images/new/icon-16.png",
     "32": "images/new/icon-32.png",
@@ -11,17 +12,30 @@
     "256": "images/new/icon-256.png"
   },
   "offline_enabled": true,
-  "permissions": ["storage", "activeTab", "contextMenus"],
+  "permissions": [
+    "storage",
+    "tabs",
+    "webNavigation",
+    "scripting",
+    "activeTab",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "*://app.joinhandshake.com/stu/jobs/*"
+  ],
   "background": {
     "service_worker": "background.js"
   },
+  "content_scripts": [
+    {
+      "matches": ["*://app.joinhandshake.com/stu/jobs/*"],
+      "js": ["content.bundle.js"],
+      "run_at": "document_idle"
+    }
+  ],
   "action": {
-    "default_popup": "index.html",
-    "default_icon": {
-      "16": "images/new/icon-16.png",
-      "32": "images/new/icon-32.png",
-      "128": "images/new/icon-128.png",
-      "256": "images/new/icon-256.png"
+
+    "default_title": "Skill Plotter",
     }
   }
 }

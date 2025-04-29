@@ -1,43 +1,44 @@
 {
   "manifest_version": 3,
-  "name": "Smart Skill Extractor",
-  "version": "1.0.0",
-  "description": "Extract and analyze skills from job postings and resumes",
+  "name": "Skill Plotter",
+  "version": "0.1.0",
+  "description": "Summarizing job posts",
+  "icons": {
+    "16": "images/favicon-16x16.png",
+    "32": "images/favicon-32x32.png",
+    "180": "images/apple-touch-icon.png",
+    "192": "images/android-chrome-192x192.png",
+    "512": "images/android-chrome-512x512.png"
+  },
   "permissions": [
     "storage",
+    "tabs",
+    "webNavigation",
+    "scripting",
     "activeTab",
-    "scripting"
+    "contextMenus"
   ],
   "host_permissions": [
-    "https://*.joinhandshake.com/*"
-  ],
-  "action": {
-    "default_popup": "index.html",
-    "default_icon": {
-      "16": "public/icon16.png",
-      "48": "public/icon48.png",
-      "128": "public/icon128.png"
-    }
-  },
-  "content_scripts": [
-    {
-      "matches": ["https://*.joinhandshake.com/*"],
-      "js": ["content.js"]
-    }
+    "*://app.joinhandshake.com/stu/jobs/*"
   ],
   "background": {
     "service_worker": "background.js"
   },
-  "icons": {
-    "16": "public/icon16.png",
-    "48": "public/icon48.png",
-    "128": "public/icon128.png"
+  "content_scripts": [
+    {
+      "matches": ["*://app.joinhandshake.com/stu/jobs/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Skill Plotter",
+    "default_popup": "popup.html"
   },
-  "content_security_policy": {
-    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
-  },
-  "web_accessible_resources": [{
-    "resources": ["chunks/pdf.worker.min.js"],
-    "matches": ["<all_urls>"]
-  }]
-} 
+  "web_accessible_resources": [
+    {
+      "resources": ["chunks/pdf.worker.min.js", "content.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
