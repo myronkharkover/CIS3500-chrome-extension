@@ -5,11 +5,14 @@
   "description": "Extract and analyze skills from job postings and resumes",
   "permissions": [
     "storage",
+    "tabs",
+    "webNavigation",
+    "scripting",
     "activeTab",
-    "scripting"
+    "contextMenus"
   ],
   "host_permissions": [
-    "https://*.joinhandshake.com/*"
+    "*://app.joinhandshake.com/stu/jobs/*"
   ],
   "action": {
     "default_popup": "index.html",
@@ -21,8 +24,9 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*.joinhandshake.com/*"],
-      "js": ["content.js"]
+      "matches": ["*://app.joinhandshake.com/stu/jobs/*"],
+      "js": ["content.bundle.js"],
+      "run_at": "document_idle"
     }
   ],
   "background": {
