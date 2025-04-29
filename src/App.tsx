@@ -123,7 +123,7 @@ const App: React.FC = () => {
 
   const handleClearPDF = async () => {
     await chrome.storage.local.remove(['storedPDF', 'userSkills', 'storedPDFName']);
-    setResumeFile(null);
+    setResumeFileName(null);
     setSkills([]);
     setHasStoredPDF(false);
     setStoredPDFName('');
