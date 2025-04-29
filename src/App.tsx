@@ -190,6 +190,18 @@ const App: React.FC = () => {
         {error && <p className="error-message">{error}</p>}
       </div>
 
+      {/* Toggle Section */}
+      <div className="toggle-section">
+        <button className='save-button' onClick={() => setShowSkills(!showSkills)}>
+          {showSkills ? 'Hide Skills' : 'Show Skills'}
+        </button>
+        <button className='save-button' onClick={() => setShowJobs(!showJobs)}>
+          {showJobs ? 'Hide Saved Jobs' : 'Show Saved Jobs'}
+        </button>
+      </div>
+
+      {/* Skills Display */}
+      {showSkills && (
       <div className="skills-section">
         <h2>Your Skills</h2>
         {isLoading ? (
@@ -219,6 +231,32 @@ const App: React.FC = () => {
           <p>Upload a resume to see your skills</p>
         )}
       </div>
+      )}
+      {/* Saved Jobs Display */}
+      {showJobs && (
+        <div className="jobs-section">
+          <h2>Saved Jobs</h2>
+          {jobs.length > 0 ? (
+            <ul className="jobs-list">
+              {jobs.map((job, idx) => (
+                <li key={idx} className="job-item">
+                  <h3>{job.title}</h3>
+                  <p><strong>{job.employerName}</strong> — {job.location}</p>
+                  <p><em>Industry:</em> {job.industry}</p>
+                  <details>
+                    <summary>Qualifications</summary>
+                    <ul>
+                      {job.minimumQualifications.map((q, i) => <li key={i}>{q}</li>)}
+                    </ul>
+                  </details>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No saved jobs yet.</p>
+          )}
+        </div>
+      )}
     </div>
   );
 };
