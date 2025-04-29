@@ -1,5 +1,3 @@
-// src/content.ts
-
 import OpenAI from "openai";
 
 interface Skill {
@@ -14,7 +12,24 @@ export interface JobInfo {
   location: string;
   minimumQualifications: string[];
   industry: string;
+  matchScore?: number;
+  requiredMatches?: string[];
+  preferredMatches?: string[];
+  niceToHaveMatches?: string[];
   [key: string]: any;
+}
+
+export interface JobRequirements {
+  required: string[];
+  preferred: string[];
+  niceToHave: string[];
+}
+
+export interface SkillMatch {
+  score: number;
+  requiredMatches: string[];
+  preferredMatches: string[];
+  niceToHaveMatches: string[];
 }
 
 /** Read the OpenAI key stored under "apiKey" in chrome.storage.local */
@@ -48,7 +63,7 @@ export async function parseJobFromHtml(htmlBlob: string): Promise<JobInfo> {
       {
         role: "system",
         content: [
-          "You’re a JSON-extraction assistant.",
+          "You're a JSON-extraction assistant.",
           "Extract job info into JSON with these fields:",
           "- employerName, title, location",
           "- minimumQualifications: array of skill names ONLY (no extra descriptors).",
@@ -103,7 +118,7 @@ function addSummarizeButton(): void {
   btn.type = "button";
   btn.setAttribute("aria-label", "Summarize");
   btn.className = applyBtn.className;
-  btn.textContent = "Summarize";
+  btn.textContent = "Extract";
   btn.style.marginLeft = "8px";
 
   btn.addEventListener("click", async () => {
@@ -116,26 +131,119 @@ function addSummarizeButton(): void {
       const job = await parseJobFromHtml(card.innerHTML);
       console.log("Parsed job:", job);
 
+      // Get user skills from storage
+      const userSkills = await new Promise<Skill[]>((resolve) => {
+        chrome.storage.local.get(['userSkills'], (result) => {
+          resolve(Array.isArray(result.userSkills) ? result.userSkills : []);
+        });
+      });
+
+      // Analyze job requirements
+      const jobRequirements = await analyzeJobRequirements(card.innerHTML);
+      
+      // Evaluate skill match
+      const skillMatch = await evaluateSkillMatch(userSkills, jobRequirements);
+
+      // Create match score display
+      const matchDisplay = document.createElement("div");
+      matchDisplay.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        z-index: 10000;
+        max-width: 300px;
+        font-family: sans-serif;
+      `;
+
+      const scoreText = document.createElement("h3");
+      scoreText.textContent = `Match Score: ${skillMatch.score}%`;
+      scoreText.style.cssText = `
+        margin: 0 0 10px 0;
+        color: #2c3e50;
+        font-size: 1.1em;
+      `;
+      matchDisplay.appendChild(scoreText);
+
+      const matchesList = document.createElement("ul");
+      matchesList.style.cssText = `
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      `;
+
+      const addMatchSection = (title: string, matches: string[]) => {
+        if (matches.length === 0) return;
+        const section = document.createElement("li");
+        section.style.marginBottom = "10px";
+        
+        const sectionTitle = document.createElement("h4");
+        sectionTitle.textContent = title;
+        sectionTitle.style.cssText = `
+          margin: 0 0 5px 0;
+          color: #34495e;
+          font-size: 0.9em;
+        `;
+        section.appendChild(sectionTitle);
+
+        const skillsList = document.createElement("ul");
+        skillsList.style.cssText = `
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        `;
+        matches.forEach(skill => {
+          const item = document.createElement("li");
+          item.textContent = skill;
+          item.style.cssText = `
+            margin: 3px 0;
+            padding: 3px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 0.9em;
+          `;
+          skillsList.appendChild(item);
+        });
+        section.appendChild(skillsList);
+        matchesList.appendChild(section);
+      };
+
+      addMatchSection("Required Skills Matched:", skillMatch.requiredMatches);
+      addMatchSection("Preferred Skills Matched:", skillMatch.preferredMatches);
+      addMatchSection("Nice-to-Have Skills Matched:", skillMatch.niceToHaveMatches);
+
+      matchDisplay.appendChild(matchesList);
+      document.body.appendChild(matchDisplay);
+
+      // Save job to storage
       chrome.storage.local.get(['savedJobs'], (result) => {
-        // 1. Read back an array (or start with an empty one)
         const savedJobs: JobInfo[] = Array.isArray(result.savedJobs)
           ? result.savedJobs
           : [];
-      
-        // 2. Push your parsed job object directly (not a string)
-        savedJobs.push(job);
-      
-        // 3. Store the array of JS objects
+        
+        // Add match score to job info
+        const jobWithMatch: JobInfo = {
+          ...job,
+          matchScore: skillMatch.score,
+          requiredMatches: skillMatch.requiredMatches,
+          preferredMatches: skillMatch.preferredMatches,
+          niceToHaveMatches: skillMatch.niceToHaveMatches
+        };
+        
+        savedJobs.push(jobWithMatch);
         chrome.storage.local.set({ savedJobs }, () => {
           if (chrome.runtime.lastError) {
             console.error('Error saving job:', chrome.runtime.lastError);
           } else {
-            console.log('Job saved:', job);
+            console.log('Job saved:', jobWithMatch);
           }
         });
       });
     } catch (e) {
-      console.error("Error parsing job:", e);
+      console.error("Error processing job:", e);
     }
   });
 
@@ -232,3 +340,71 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("Content script loaded");
   addSummarizeButton();
 });
+
+export async function analyzeJobRequirements(jobDescription: string): Promise<JobRequirements> {
+  const client = await makeClient();
+  const response = await client.chat.completions.create({
+    model: "gpt-3.5-turbo-0125",
+    messages: [
+      {
+        role: "system",
+        content: "Analyze the job description and categorize skills into required, preferred, and nice-to-have. Return only a JSON object with these arrays."
+      },
+      { role: "user", content: jobDescription }
+    ]
+  });
+
+  const raw = response.choices?.[0]?.message?.content;
+  if (typeof raw !== "string") {
+    throw new Error("Unexpected response format; no content found");
+  }
+
+  const jsonString = raw
+    .replace(/^\s*```?json\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
+
+  try {
+    return JSON.parse(jsonString) as JobRequirements;
+  } catch (err) {
+    console.error("Failed to parse JSON:", jsonString);
+    throw err;
+  }
+}
+
+export async function evaluateSkillMatch(userSkills: Skill[], jobRequirements: JobRequirements): Promise<SkillMatch> {
+  const client = await makeClient();
+  const response = await client.chat.completions.create({
+    model: "gpt-3.5-turbo-0125",
+    messages: [
+      {
+        role: "system",
+        content: "Evaluate how well the user's skills match the job requirements. Return a JSON object with match score (0-100) and arrays of matching skills."
+      },
+      {
+        role: "user",
+        content: JSON.stringify({
+          userSkills,
+          jobRequirements
+        })
+      }
+    ]
+  });
+
+  const raw = response.choices?.[0]?.message?.content;
+  if (typeof raw !== "string") {
+    throw new Error("Unexpected response format; no content found");
+  }
+
+  const jsonString = raw
+    .replace(/^\s*```?json\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
+
+  try {
+    return JSON.parse(jsonString) as SkillMatch;
+  } catch (err) {
+    console.error("Failed to parse JSON:", jsonString);
+    throw err;
+  }
+}

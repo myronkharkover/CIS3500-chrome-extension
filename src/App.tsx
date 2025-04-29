@@ -228,6 +228,35 @@ const App: React.FC = () => {
                   <h3>{job.title}</h3>
                   <p><strong>{job.employerName}</strong> — {job.location}</p>
                   <p><em>Industry:</em> {job.industry}</p>
+                  {job.matchScore && (
+                    <div className="match-score">
+                      <p>Match Score: {job.matchScore}%</p>
+                      {job.requiredMatches && job.requiredMatches.length > 0 && (
+                        <div>
+                          <h4>Required Skills Matched:</h4>
+                          <ul>
+                            {job.requiredMatches.map((skill: string, i: number) => <li key={i}>{skill}</li>)}
+                          </ul>
+                        </div>
+                      )}
+                      {job.preferredMatches && job.preferredMatches.length > 0 && (
+                        <div>
+                          <h4>Preferred Skills Matched:</h4>
+                          <ul>
+                            {job.preferredMatches.map((skill: string, i: number) => <li key={i}>{skill}</li>)}
+                          </ul>
+                        </div>
+                      )}
+                      {job.niceToHaveMatches && job.niceToHaveMatches.length > 0 && (
+                        <div>
+                          <h4>Nice-to-Have Skills Matched:</h4>
+                          <ul>
+                            {job.niceToHaveMatches.map((skill: string, i: number) => <li key={i}>{skill}</li>)}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )}
                   <details>
                     <summary>Qualifications</summary>
                     <ul>
