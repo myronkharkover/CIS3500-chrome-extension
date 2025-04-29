@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Chrome Extension React/TypeScript Starter",
-  "version": "1.0",
-  "description": "Template for a Chrome Extension using React/TypeScript and built with Vite",
+  "name": "Skill Plotter",
+  "version": "0.1.0",
+  "description": "Summarizing job posts",
   "icons": {
     "16": "images/favicon-16x16.png",
     "32": "images/favicon-32x32.png",
@@ -11,11 +11,29 @@
     "512": "images/android-chrome-512x512.png"
   },
   "offline_enabled": true,
-  "permissions": ["storage", "activeTab", "contextMenus"],
+  "permissions": [
+    "storage",
+    "tabs",
+    "webNavigation",
+    "scripting",
+    "activeTab",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "*://app.joinhandshake.com/stu/jobs/*"
+  ],
   "background": {
     "service_worker": "background.js"
   },
+  "content_scripts": [
+    {
+      "matches": ["*://app.joinhandshake.com/stu/jobs/*"],
+      "js": ["content.bundle.js"],
+      "run_at": "document_idle"
+    }
+  ],
   "action": {
+    "default_title": "Skill Plotter",
     "default_popup": "index.html"
   }
 }
