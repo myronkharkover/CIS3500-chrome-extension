@@ -12,7 +12,7 @@
     "contextMenus"
   ],
   "host_permissions": [
-    "*://app.joinhandshake.com/stu/jobs/*"
+    "*://*.joinhandshake.com/*"
   ],
   "action": {
     "default_popup": "index.html",
@@ -24,7 +24,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://app.joinhandshake.com/stu/jobs/*"],
+      "matches": ["*://app.joinhandshake.com/stu/jobs/*", "*://upenn.joinhandshake.com/stu/jobs/*", "*://*.linkedin.com/*"],
       "js": ["content.bundle.js"],
       "run_at": "document_idle"
     }
