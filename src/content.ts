@@ -203,7 +203,6 @@ function addSummarizeButton(): void {
     if (!card) return;
     try {
       const job = await parseJobFromHtml(card.innerHTML);
-      console.log("Parsed job:", job);
 
       chrome.storage.local.get(['savedJobs'], (result) => {
         // 1. Read back an array (or start with an empty one)
@@ -218,8 +217,6 @@ function addSummarizeButton(): void {
         chrome.storage.local.set({ savedJobs }, () => {
           if (chrome.runtime.lastError) {
             console.error('Error saving job:', chrome.runtime.lastError);
-          } else {
-            console.log('Job saved:', job);
           }
         });
       });
