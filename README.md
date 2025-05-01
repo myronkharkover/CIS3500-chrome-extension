@@ -13,11 +13,19 @@ Smart Skill Extractor is a Google Chrome extension that helps job applicants hig
    ```bash
    npm install
    ```
-3. **Build the extension**
+3. **Install OpenAI package**
+   ```bash
+   npm i openai
+   ```
+4. **Build the extension**
    ```bash
    npm run build
    ```
-4. **Load the extension in Chrome**
+5. **Build content scripts**
+   ```bash
+   npm run build:content
+   ```
+6. **Load the extension in Chrome**
    - Navigate to `chrome://extensions/`
    - Enable **Developer mode**
    - Click **Load unpacked** and select the `dist` folder in this project
@@ -29,19 +37,25 @@ Smart Skill Extractor is a Google Chrome extension that helps job applicants hig
 | Upload PDF resume and extract skills using PDF.js                     | Emily Yu (yuemily12) |
 | Categorize skills by domain (Programming, Cloud, Web, etc.)           | Emily Yu             |
 | Store extracted skills in `chrome.storage` and sync across components | Mudit Marwaha        |
-| Overlay matching skills on Linkedin job postings via content script   | Myron Kharkover      |
+| Overlay matching skills on Handshake job postings via content script   | Myron Kharkover & Praise Ndlovu  |
 | UI/UX design for popup (upload, progress, and skill display)          | Emily Yu & Mudit Marwaha |
 | Vite + TypeScript React setup, manifest and build configuration       | Myron Kharkover      |
 | Error handling, regex escape, and performance optimizations           | Emily Yu & Myron     |
 | PDF storage persistence and management across sessions                | Mudit Marwaha        |
+| Testing (interface, prompt, persistence, and job extraction)          | Emily Yu & Mudit Marwaha |
+| Job matching with ChatGPT integration and match score generation      | Praise Ndlovu & Myron Kharkover |
 
 ## Known Bugs & Incomplete Features
 
-- Skill extraction may miss synonyms or multi-word technologies (e.g., "RESTful API").
-- No backend verification: extraction logic runs entirely in the browser.
-- Linkedin matching logic only overlays skills; does not compute match score with a given job posting yet.
-- Support for non-PDF resume formats (Word, plain text) is not implemented.
-- No persistence beyond `chrome.storage`; uninstalling the extension clears uploaded data.
+- Skill extraction may occasionally miss complex multi-word technologies or industry-specific terminology
+- Handshake job extraction is currently limited to basic job details; advanced features like salary range and application deadline extraction are not implemented
+- Job matching algorithm currently uses basic keyword matching; more sophisticated semantic matching is planned for future updates
+- Extension performance may be slower with very large PDF resumes (>10MB)
+- No support for batch processing multiple resumes
+- Limited to English language resumes and job postings
+- No export functionality for extracted skills or job matches
+- No integration with other job platforms beyond Handshake
+- Match Score is not currently displayed
 
 ## Landing Page
 
