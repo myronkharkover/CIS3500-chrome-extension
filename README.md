@@ -1,6 +1,6 @@
 # Smart Skill Extractor
 
-Smart Skill Extractor is a Google Chrome extension that helps job applicants highlight and extract key skills from both job postings and personal resumes. Users can upload a PDF resume, view their top skills categorized by domain, and see matching skills overlaid on career sites like Linkedin.
+Smart Skill Extractor is a Google Chrome extension that helps job applicants highlight and extract key skills from both job postings and personal resumes. Users can upload a PDF resume, view their top skills categorized by domain, and see matching skills overlaid on career sites like Handshake. The extension uses ChatGPT API calls to analyze job postings and generate a match score based on the alignment between the user's skills and job requirements.
 
 ## Setup Instructions
 
