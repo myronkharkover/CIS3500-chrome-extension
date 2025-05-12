@@ -12,6 +12,7 @@
     "contextMenus"
   ],
   "host_permissions": [
+
     "*://app.joinhandshake.com/*"
   ],
   "action": {
@@ -24,6 +25,7 @@
   },
   "content_scripts": [
     {
+
       "matches": ["*://app.joinhandshake.com/*"],
       "js": ["content.bundle.js"],
       "run_at": "document_idle"
