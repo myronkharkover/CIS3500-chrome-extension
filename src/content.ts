@@ -291,7 +291,7 @@ function addSummarizeButton(): void {
 
   btn.addEventListener("click", async () => {
     clickMoreButton();
-      const card = document.querySelector<HTMLElement>('div[data-hook="job-details-page"]');
+    const card = document.querySelector<HTMLElement>('div[data-hook="job-details-page"]');
     if (!card) return;
     try {
       const job = await parseJobFromHtml(card.innerHTML);
@@ -392,12 +392,30 @@ async function calculateJobScore(job: JobInfo): Promise<void> {
     const score = parseFloat(response.choices[0].message.content || '0');
     job.score = Math.min(10, Math.max(0, score));
     
-    // Update the score display immediately
-    const scoreText = document.querySelector('.skills-overlay p') as HTMLElement;
-    if (scoreText) {
-      scoreText.textContent = `Job Match: ${job.score.toFixed(1)}/10`;
-      scoreText.style.color = job.score >= 7 ? '#2ecc71' : job.score >= 5 ? '#f39c12' : '#e74c3c';
-    }
+// Remove any existing score display first
+    removeScoreDisplay();
+    
+    // Create and display the score text
+    const scoreDisplay = document.createElement('div');
+    scoreDisplay.id = 'job-score-display';
+    scoreDisplay.textContent = `Your Match Score: ${job.score.toFixed(1)}/10`;
+    scoreDisplay.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: ${getScoreColor(job.score)};
+      color: white;
+      padding: 10px 15px;
+      border-radius: 4px;
+      z-index: 1000;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      font-size: 14px;
+    `;
+    document.body.appendChild(scoreDisplay);
+
+    // Add event listener to remove display when navigating away
+    window.addEventListener('beforeunload', removeScoreDisplay);
     
     chrome.storage.local.get(['savedJobs'], (result) => {
       const savedJobs: JobInfo[] = Array.isArray(result.savedJobs) ? result.savedJobs : [];
@@ -408,6 +426,21 @@ async function calculateJobScore(job: JobInfo): Promise<void> {
       }
     });
   });
+}
+
+function removeScoreDisplay() {
+  const existingDisplay = document.getElementById('job-score-display');
+  if (existingDisplay) {
+    existingDisplay.remove();
+  }
+  // Remove the event listener to prevent memory leaks
+  window.removeEventListener('beforeunload', removeScoreDisplay);
+}
+
+function getScoreColor(score: number): string {
+  if (score >= 7) return '#2ecc71'; // Green
+  if (score >= 5) return '#f39c12'; // Orange
+  return '#e74c3c'; // Red
 }
 
 async function getResumeText(): Promise<string> {
