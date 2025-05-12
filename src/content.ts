@@ -13,6 +13,7 @@ export interface JobInfo {
 // Listen for messages from the popup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "NEW_JOB") {
+    console.log("New job message received");
     addSummarizeButton();
   }
 
@@ -176,6 +177,7 @@ function clickMoreButton(): void {
 
 /** Inject a "Summarize" button next to the "Apply" button */
 function addSummarizeButton(): void {
+  console.log("Adding Summarize button");
   const applyBtn = document.querySelector<HTMLButtonElement>(
     'button[aria-label="Apply"]'
   );
@@ -224,6 +226,6 @@ function addSummarizeButton(): void {
       console.error("Error parsing job:", e);
     }
   });
-
+  console.log("Adding button to container", container);
   container.appendChild(btn);
 }

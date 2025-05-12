@@ -12,7 +12,7 @@
     "contextMenus"
   ],
   "host_permissions": [
-    "*://app.joinhandshake.com/stu/jobs/*"
+    "*://app.joinhandshake.com/*"
   ],
   "action": {
     "default_popup": "index.html",
@@ -24,7 +24,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://app.joinhandshake.com/stu/jobs/*"],
+      "matches": ["*://app.joinhandshake.com/*"],
       "js": ["content.bundle.js"],
       "run_at": "document_idle"
     }
