@@ -44,6 +44,7 @@ Smart Skill Extractor is a Google Chrome extension that helps job applicants hig
 | PDF storage persistence and management across sessions                | Mudit Marwaha        |
 | Testing (interface, prompt, persistence, and job extraction)          | Emily Yu & Mudit Marwaha |
 | Job matching with ChatGPT integration and match score generation      | Praise Ndlovu & Myron Kharkover |
+| Match Score UI and Storage                                            | Praise Ndlovu & Mudit Marwaha|
 
 ## Known Bugs & Incomplete Features
 
@@ -55,7 +56,6 @@ Smart Skill Extractor is a Google Chrome extension that helps job applicants hig
 - Limited to English language resumes and job postings
 - No export functionality for extracted skills or job matches
 - No integration with other job platforms beyond Handshake
-- Match Score is not currently displayed
 
 ## Landing Page
 
