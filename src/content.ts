@@ -291,9 +291,7 @@ function addSummarizeButton(): void {
 
   btn.addEventListener("click", async () => {
     clickMoreButton();
-    const card = document.querySelector<HTMLDivElement>(
-      'div.style__full-height___E_Ofr.style__card___1rhof[data-hook="card"]'
-    );
+      const card = document.querySelector<HTMLElement>('div[data-hook="job-details-page"]');
     if (!card) return;
     try {
       const job = await parseJobFromHtml(card.innerHTML);
