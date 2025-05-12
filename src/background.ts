@@ -20,7 +20,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 chrome.webNavigation.onHistoryStateUpdated.addListener(details => {
   const url = details.url;
-  if (!url.startsWith("https://app.joinhandshake.com/stu/jobs/")) return;
+  if (!url.startsWith("https://app.joinhandshake.com/jobs/")) {
+    console.log("Not a Handshake job page, ignoring.");
+    return;
+  }
 
   // 1) Inject contentScript.js into that tab
   chrome.scripting.executeScript({
@@ -34,5 +37,5 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(details => {
     });
   }).catch(err => console.error("Injection failed:", err));
 }, {
-  url: [{ hostEquals: "app.joinhandshake.com", pathPrefix: "/stu/jobs/" }]
+  url: [{ hostEquals: "app.joinhandshake.com", pathPrefix: "/jobs/" }]
 });
